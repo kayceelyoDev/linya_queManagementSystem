@@ -9,7 +9,7 @@ Route::middleware('guest')->group(function () {
         ->name('login');
 
     Volt::route('register', 'auth.register')
-        ->name('register');
+    ->name('register');
 
     Volt::route('forgot-password', 'auth.forgot-password')
         ->name('password.request');
@@ -18,6 +18,12 @@ Route::middleware('guest')->group(function () {
         ->name('password.reset');
 
 });
+
+Route::middleware('auth', 'verified','role:admin')->group(function(){
+    Volt::route('registerUser','register-account')->name('registerUser');
+});
+    
+
 
 Route::middleware('auth')->group(function () {
     Volt::route('verify-email', 'auth.verify-email')

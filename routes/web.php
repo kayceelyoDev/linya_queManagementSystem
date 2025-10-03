@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\QueController;
+use App\Livewire\DisplayQue;
+use App\Livewire\MainDashboard;
 use App\Livewire\ManageQue;
 use App\Livewire\QueDashboard;
 use Illuminate\Support\Facades\Route;
@@ -13,11 +15,13 @@ Route::get('/', function () {
 
 
 
+Route::get('/displayque', DisplayQue::class);
+
 //route dashboard///
 Route::middleware(['auth','verified' ])->group(function (){
         
         Route::prefix('dashboard')->group(function(){
-            Route::view('/', 'dashboard')->name('dashboard')->middleware('role:staff,admin');;
+            Route::get('/', MainDashboard::class)->name('dashboard')->middleware('role:staff,admin');
             Route::get('/addque', QueDashboard::class)->name('addque');
             Route::get('/manageque', ManageQue::class)->name('manageQue')->middleware('role:staff,admin');
             Route::view('/adduser', 'livewire.add-user')->name('addUser')->middleware('role:admin');

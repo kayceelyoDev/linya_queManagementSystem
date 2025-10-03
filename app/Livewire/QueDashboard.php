@@ -46,7 +46,7 @@ class QueDashboard extends Component
         $this->isHaveQue = queTable::where('user_id',$user->id)->where('status', 'waiting')->count();
         $userQue = queTable::where('user_id', $user->id)
                    ->where('status', 'waiting')
-                   ->first();
+                   ->first(); 
 
         $this->userQueNumber = $userQue ? $userQue->que_number : null;
         $currentQueue = queTable::where('status', 'waiting')->first();

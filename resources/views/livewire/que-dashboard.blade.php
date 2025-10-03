@@ -4,7 +4,7 @@
                 <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" title="Current Serving" :count="$currentNumber "/>
             </div>
             <div class="relative aspect-video overflow-hidden  w-150 h-50 md:h-70 rounded-xl border border-neutral-200 dark:border-neutral-700" >
-                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" title="Your Number" :count="$userQueNumber"/>
+                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" title="Your Number"  :count="$userQueNumber"/>
             </div>
         </div>
 
