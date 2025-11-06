@@ -1,51 +1,71 @@
+<div class="flex flex-col gap-6 h-full w-full font-mono" wire:poll.1s>
+    <!-- Top 3 Stats -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Current Number -->
+        <div class="relative aspect-video overflow-hidden rounded-xl   bg-gray-50 dark:bg-gray-900/20">
+            <x-placeholder-pattern class="absolute inset-0 w-full h-full stroke-gray-400 dark:stroke-gray-300"
+                title="Current Number" :count="$currentNum" />
+        </div>
 
-    <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl" wire:poll.1s>
-        <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" title="Current Number" :count="$currentNum"/>
-            </div>
-            <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" title="Next Number" :count="$nextNum"/>
-            </div>
-            <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" title="Number of Que" :count="$numOfQue"/>
+        <!-- Next Number -->
+        <div class="relative aspect-video overflow-hidden rounded-xl   bg-gray-50 dark:bg-gray-900/20">
+            <x-placeholder-pattern class="absolute inset-0 w-full h-full stroke-gray-400 dark:stroke-gray-300"
+                title="Next Number" :count="$nextNum" />
+        </div>
+
+        <!-- Number of Queues -->
+        <div class="relative aspect-video overflow-hidden rounded-xl   bg-gray-50 dark:bg-gray-900/20">
+            <x-placeholder-pattern class="absolute inset-0 w-full h-full stroke-gray-400 dark:stroke-gray-300"
+                title="Number of Queues" :count="$numOfQue" />
+        </div>
+    </div>
+
+    <!-- Queue List Table -->
+    <div class="relative flex-1 overflow-hidden rounded-xl border border-gray-300 dark:border-gray-600">
+        <div class="p-4 bg-gray-50 dark:bg-gray-900/20 h-full rounded-lg shadow-none flex flex-col">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-200 font-mono">Queue List</h2>
+
+            <div class="overflow-x-auto flex-1">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 font-mono">
+                    <thead class="bg-gray-50 dark:bg-gray-800">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xl font-semibold text-gray-900 dark:text-gray-100">#
+                            </th>
+                            <th class="px-6 py-3 text-left text-xl font-semibold text-gray-900 dark:text-gray-100">Queue
+                                Number</th>
+                            <th class="px-6 py-3 text-left text-xl font-semibold text-gray-900 dark:text-gray-100">User
+                                ID</th>
+                            <th class="px-6 py-3 text-left text-xl font-semibold text-gray-900 dark:text-gray-100">
+                                Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900">
+                        @forelse($que as $index => $queue)
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                                <td class="px-6 py-4 text-lg text-gray-800 dark:text-gray-200">{{ $index + 1 }}</td>
+                                <td class="px-6 py-4 text-lg text-gray-800 dark:text-gray-200">{{ $queue->que_number }}
+                                </td>
+                                <td class="px-6 py-4 text-lg text-gray-800 dark:text-gray-200">{{ $queue->user_id }}
+                                </td>
+                                <td class="px-6 py-4 text-lg">
+                                    <flux:badge color="blue" size="lg"
+                                        class="text-white dark:text-white dark:bg-blue-700 bg-blue-500">
+                                        {{ $queue->purpose }}
+                                    </flux:badge>
+                                </td>
+
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                                    No queues available.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+
             </div>
         </div>
-        <div class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <div class="p-4 bg-white dark:bg-gray-400/30 mt-2 h-full rounded-lg shadow-md">
-    <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100">Queue List</h2>
-
-    <div class="overflow-x-auto h-55">
-        <table class="min-w-full bg-white  dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
-            <thead>
-                <tr class="bg-gray-100 dark:bg-gray-800 text-left">
-                    <th class="px-4 py-2 border-b border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100">#</th>
-                    <th class="px-4 py-2 border-b border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100">Queue Number</th>
-                    <th class="px-4 py-2 border-b border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100">User ID</th>
-                    <th class="px-4 py-2 border-b border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100">Purpose</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($que as $index => $queue)
-                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-800">
-                        <td class="px-4 py-2 border-b border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100">{{ $index + 1 }}</td>
-                        <td class="px-4 py-2 border-b border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100">{{ $queue->que_number }}</td>
-                        <td class="px-4 py-2 border-b border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100">{{ $queue->user_id }}</td>
-                        <td class="px-4 py-2 border-b border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100">{{ $queue->purpose }}</td>
-                    </tr>
-                @endforeach
-
-                @if($que->isEmpty())
-                    <tr>
-                        <td colspan="4" class="px-4 py-4 text-center text-gray-500 dark:text-gray-400">
-                            No queues available.
-                        </td>
-                    </tr>
-                @endif
-            </tbody>
-        </table>
     </div>
 </div>
-        </div>
-    </div>
-

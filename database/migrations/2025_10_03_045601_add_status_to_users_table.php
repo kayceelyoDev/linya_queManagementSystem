@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
-        Schema::create('queue_status', function (Blueprint $table) {
-        $table->id();
-        $table->unsignedInteger('current_number')->default(0);
-        $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            //
+            $table->enum('status', ['online', 'offline',])->default('offline');
         });
-
     }
 
     /**
@@ -25,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 };

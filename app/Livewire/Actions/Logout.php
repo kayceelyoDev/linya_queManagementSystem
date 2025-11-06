@@ -12,11 +12,17 @@ class Logout
      */
     public function __invoke()
     {
-        Auth::guard('web')->logout();
+        $user = Auth::guard('web')->user(); // get currently logged-in user
 
-        Session::invalidate();
-        Session::regenerateToken();
+        if ($user) {
+            $user->status = 'offline'; // set status to offline
+            $user->save(); // save changes to database
+        }
 
-        return redirect('/');
+        Auth::guard('web')->logout(); // logout user
+        Session::invalidate(); // invalidate session
+        Session::regenerateToken(); // regenerate CSRF token
+
+        return redirect('/'); // redirect to homepage
     }
 }
