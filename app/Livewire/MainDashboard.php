@@ -14,7 +14,7 @@ class MainDashboard extends Component
     public function render()
     {   
         //get the current que number
-        $current = queTable::where('status', 'waiting') -> first();
+        $current = queTable::where('status', 'waiting') -> first() ?? 0;
         $this-> currentNum = $current ? $current -> que_number : 0;
 
         //get the next number

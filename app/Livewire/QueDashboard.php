@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\QueStatus;
 use App\Models\queTable;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -18,10 +19,14 @@ class QueDashboard extends Component
     public $userQueNumber;
     public $currentNumber;
 
-    public function addque(){
-        $maxNumber = queTable::max('que_number');
+    public $todays;
 
-        if($maxNumber >= 300){
+    public function addque(){
+    
+        $maxNumber = queTable::whereDate('created_at', Carbon::today())->max('que_number');
+  
+
+        if($maxNumber >= 300 ||!$maxNumber){
              $this -> number =  1;
         }else{
              $this -> number = ($maxNumber ?? 0 ) + 1;
@@ -35,6 +40,7 @@ class QueDashboard extends Component
             'user_id' => $this -> userID,
             'que_number' => $this->number,
             'purpose' => $this-> purpose,
+            'created_at'=> Carbon::now(),
         ]);
 
     }
