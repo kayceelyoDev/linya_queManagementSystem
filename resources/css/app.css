@@ -1,22 +1,52 @@
+/* 1. Import the Font (Critical for the look) */
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&display=swap');
+
 @import 'tailwindcss';
 
+/* 2. Tell Tailwind where to look for Flux classes */
+/* These paths exist on YOUR computer, so the build will work locally */
+@source "../views";
+@source "../../vendor/livewire/flux/stubs/**/*.blade.php";
+@source "../../vendor/livewire/flux-pro/stubs/**/*.blade.php";
+
 /* ------------------------------------------------ */
-/* 1. FLUX STYLES (Merged Inline)                   */
+/* 3. FLUX & THEME CONFIGURATION                    */
 /* ------------------------------------------------ */
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
+    /* Use the font we imported above */
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-zinc-50: #fafafa;
+    --color-zinc-100: #f5f5f5;
+    --color-zinc-200: #e5e5e5;
+    --color-zinc-300: #d4d4d4;
+    --color-zinc-400: #a3a3a3;
+    --color-zinc-500: #737373;
+    --color-zinc-600: #525252;
+    --color-zinc-700: #404040;
+    --color-zinc-800: #262626;
+    --color-zinc-900: #171717;
+    --color-zinc-950: #0a0a0a;
+
     --color-accent: var(--color-zinc-800);
-    --color-accent-content: var(--color-zinc-800);
+    --color-accent-content: var(--color-white);
     --color-accent-foreground: var(--color-white);
 }
 
 @layer theme {
     .dark {
         --color-accent: var(--color-white);
-        --color-accent-content: var(--color-white);
+        --color-accent-content: var(--color-zinc-800);
         --color-accent-foreground: var(--color-zinc-800);
     }
 }
+
+/* ------------------------------------------------ */
+/* 4. FLUX COMPONENT STYLES                         */
+/* ------------------------------------------------ */
 
 *:has(>[data-flux-main]) {
     display: grid;
@@ -36,7 +66,6 @@
         "sidebar footer  aside";
 }
 
-/* Transition dialogs with fade a slight scale effect... */
 [data-flux-modal] > dialog, [data-flux-modal] > dialog::backdrop {
     opacity: 0;
     transition: all 0.075s allow-discrete;
@@ -52,20 +81,14 @@
 }
 
 @starting-style {
-    [data-flux-modal] > dialog[open], [data-flux-modal] > dialog[open]::backdrop {
-        opacity: 0;
-    }
-    [data-flux-modal] > dialog[open] {
-        transform: scale(0.95);
-    }
+    [data-flux-modal] > dialog[open], [data-flux-modal] > dialog[open]::backdrop { opacity: 0; }
+    [data-flux-modal] > dialog[open] { transform: scale(0.95); }
     [data-flux-modal] > dialog[open][data-flux-flyout] { transform: scale(1) var(--fx-flyout-translate, translateX(50px)); }
 }
 
-[data-flux-modal] > dialog::backdrop {
-    background-color: rgba(0, 0, 0, 0.25);
-}
+[data-flux-modal] > dialog::backdrop { background-color: rgba(0, 0, 0, 0.25); }
 
-/* Native select styles... */
+/* Native Selects */
 select[data-flux-select-native] {
     background-image: url("data:image/svg+xml,%3csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M8 9L12 5L16 9' stroke='%23d4d4d4' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3e%3cpath d='M16 15L12 19L8 15' stroke='%23d4d4d4' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
     background-position: right .5rem center;
@@ -76,9 +99,7 @@ select[data-flux-select-native] {
     -webkit-print-color-adjust: exact;
 }
 
-[dir="rtl"] select[data-flux-select-native] {
-    background-position: left .5rem center;
-}
+[dir="rtl"] select[data-flux-select-native] { background-position: left .5rem center; }
 
 select[data-flux-select-native]:hover:not(:disabled) {
     background-image: url("data:image/svg+xml,%3csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M8 9L12 5L16 9' stroke='%2327272a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3e%3cpath d='M16 15L12 19L8 15' stroke='%2327272a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
@@ -92,7 +113,7 @@ select[data-flux-select-native]:hover:not(:disabled) {
     background-image: url("data:image/svg+xml,%3csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M8 9L12 5L16 9' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3e%3cpath d='M16 15L12 19L8 15' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
 }
 
-/* Toast styles... */
+/* Toast Configuration */
 ui-toast {
     margin: 1.5rem;
     max-width: 24rem;
@@ -157,56 +178,14 @@ ui-toast-group {
 .flux-no-scrollbar { scrollbar-width:none; -ms-overflow-style:none; }
 .flux-no-scrollbar::-webkit-scrollbar{ display:none }
 
-/* ------------------------------------------------ */
-/* 2. APP STYLES                                    */
-/* ------------------------------------------------ */
-
-@source '../views';
-/* Note: I removed the vendor sources because they don't exist on Vercel */
-
-@custom-variant dark (&:where(.dark, .dark *));
-
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-
-    --color-zinc-50: #fafafa;
-    --color-zinc-100: #f5f5f5;
-    --color-zinc-200: #e5e5e5;
-    --color-zinc-300: #d4d4d4;
-    --color-zinc-400: #a3a3a3;
-    --color-zinc-500: #737373;
-    --color-zinc-600: #525252;
-    --color-zinc-700: #404040;
-    --color-zinc-800: #262626;
-    --color-zinc-900: #171717;
-    --color-zinc-950: #0a0a0a;
-
-    --color-accent: var(--color-neutral-800);
-    --color-accent-content: var(--color-neutral-800);
-    --color-accent-foreground: var(--color-white);
-}
-
-@layer theme {
-    .dark {
-        --color-accent: var(--color-white);
-        --color-accent-content: var(--color-white);
-        --color-accent-foreground: var(--color-neutral-800);
-    }
-}
-
 @layer base {
     *, ::after, ::before, ::backdrop, ::file-selector-button {
         border-color: var(--color-gray-200, currentColor);
     }
 }
 
-[data-flux-field]:not(ui-radio, ui-checkbox) {
-    @apply grid gap-2;
-}
-
-[data-flux-label] {
-    @apply  !mb-0 !leading-tight;
-}
+[data-flux-field]:not(ui-radio, ui-checkbox) { @apply grid gap-2; }
+[data-flux-label] { @apply !mb-0 !leading-tight; }
 
 input:focus[data-flux-control],
 textarea:focus[data-flux-control],
@@ -214,6 +193,4 @@ select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
 
-html {
-    scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
